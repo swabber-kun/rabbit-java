@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/rabbit"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd  
+    http://www.springframework.org/schema/rabbit  
+    http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd">
+
+    <!--配置connection-factory，指定连接rabbit server参数 -->
+	<connection-factory 
+	    id="connectionFactory" 
+	    host="localhost"
+		username="guest" password="guest" port="5672" 
+		connection-timeout="1000"
+		publisher-confirms="true" publisher-returns="true" />
+
+    <!--通过指定下面的admin信息，当前producer中的exchange和queue会在rabbitmq服务器上自动生成 -->
+	<admin connection-factory="connectionFactory" />
+	
+	<!--定义rabbit template用于数据的接收和发送 -->
+	<template id="amqpTemplate"  connection-factory="connectionFactory" exchange="exchangeTest" />
+	
+	<!--定义queue -->
+	<queue name="queueTest" durable="true" auto-delete="false" exclusive="false" />
+
+    <!-- 定义direct exchange，绑定queueTest -->
+    <direct-exchange name="exchangeTest" durable="true" auto-delete="false">
+        <bindings>
+            <binding queue="queueTest" key="queueTestKey"></binding>
+        </bindings>
+    </direct-exchange>
+    
+</beans:beans>  
