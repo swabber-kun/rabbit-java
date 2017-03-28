@@ -44,7 +44,7 @@ public class SendMessageController {
 
 		String routing = "github-exchange";
 
-		String queue = "github-exchange";
+		String queue = "queueTest";
 
 		String type = "topic";
 
