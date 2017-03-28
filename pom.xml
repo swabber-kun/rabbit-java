@@ -28,7 +28,7 @@
         <commons-collections.version>3.2.1</commons-collections.version>
         <httpclient.version>4.3.5</httpclient.version>
         <jackson-databind.version>2.4.2</jackson-databind.version>
-        <fastjson.version>1.1.43</fastjson.version>
+        <fastjson.version>1.2.28</fastjson.version>
 
         <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
 
@@ -322,10 +322,7 @@
                     <path>${tomcat-path.version}</path>
                     <port>${tomcat-port.version}</port>
                     <uriEncoding>${tomcat-uri-encoding.version}</uriEncoding>
-                    <url>http://localhost:8080/manager/text</url>
                     <server>tomcat7</server>
-                    <username>admin</username>
-                    <password>admin</password>
                 </configuration>
             </plugin>
 
