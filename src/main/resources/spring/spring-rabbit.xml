@@ -30,4 +30,25 @@
         </bindings>
     </direct-exchange>
     
+    <!-- 配置消费者 -->
+    <beans:bean id="messageReceiver" class="com.niubimq.consumer.MessageConsumer"></beans:bean>
+    
+    <!-- queue litener  观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象-->
+    <listener-container connection-factory="connectionFactory">
+        <listener queues="queueTest" ref="messageReceiver"/>
+    </listener-container>
+    
+    <!-- ******************************Topic匹配传输********************************   -->
+    <template id="topicTemplate"  connection-factory="connectionFactory" exchange="topicExchange"/>
+    
+    <!--定义queue -->
+    <queue name="topicQueue" durable="true" auto-delete="false" exclusive="false" />
+    
+    <!--topic交换器 pattern与topicTemplate.convertAndSend("foo.bar",message);第一个参数匹配-->
+    <topic-exchange name="topicExchange">
+        <bindings>
+            <binding queue="topicQueue" pattern="info.*" />
+        </bindings>
+    </topic-exchange>
+    
 </beans:beans>  
