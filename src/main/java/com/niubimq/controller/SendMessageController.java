@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.niubimq.pojo.DetailRes;
 import com.niubimq.service.SendMessage;
 
@@ -40,17 +41,20 @@ public class SendMessageController {
 	@ResponseBody
 	public DetailRes sendMessage() throws Exception {
 
-		String exchange = "github-exchange";
+		String exchange = "exchangeTest";
 
-		String routing = "github-exchange";
+		String routing = "queueTestKey";
 
 		String queue = "queueTest";
 
-		String type = "topic";
+		String type = "direct";
+		
+		JSONObject json = new JSONObject();
+		json.put("trackId", "jbk001");
+		json.put("name", "jbk");
+		json.put("url", "www.baidu.com");
 
-		String object = "github123";
-
-		DetailRes detailRes = sendMessage.send(exchange, routing, queue, type,object);
+		DetailRes detailRes = sendMessage.send(exchange, routing, queue, type,json);
 
 		return detailRes;
 

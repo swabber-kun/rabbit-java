@@ -1,7 +1,7 @@
 package com.niubimq.consumer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.UnsupportedEncodingException;
+
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
 
@@ -13,12 +13,16 @@ import org.springframework.amqp.core.MessageListener;
  */
 public class MessageConsumer implements MessageListener {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
-
 	@Override
 	public void onMessage(Message message) {
-		logger.info("receive message:{}",message);
-		System.out.println(new String(message.getBody()));
+
+		//调用具体的业务逻辑
+		try {
+			ProcessMessage.process(message);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }
