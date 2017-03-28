@@ -2,12 +2,16 @@ package com.niubimq.client;
 
 import com.niubimq.cache.RetryCache;
 import com.niubimq.pojo.Contants;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.QueueingConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
+
+import java.io.IOException;
 
 /**
  * Created by junjin4838 on 17/3/17.
@@ -79,6 +83,40 @@ public class RabbitFactory {
 
         return rabbitTemplate;
 
+    }
+
+
+    /**
+     * 创建消费者 
+     * @return
+     */
+    public static QueueingConsumer buildQueueConsumer(Connection connection,String queue){
+    	
+    	try {
+    		//不使用事务
+        	Channel channel = connection.createChannel(false);
+        	QueueingConsumer consumer = new QueueingConsumer(channel);
+        	
+        	//通过BasicQos方法设置prefetchCount=1,这样RabbitMQ就会使得每个Consumer在同一个时间点最多处理一个Message
+        	//可以理解为：在接受到该Consumer的ack之前，是不会将新的Message分发给消费者的
+            //阻止rabbitmq将消息平均分配到每一个消费者，会优先的发给不忙的消费者，如果当前的消费者在忙的话，就将消息分配给下一个消费者
+			channel.basicQos(1);
+			channel.basicConsume(queue, false, consumer);
+			
+			return consumer;
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.info("build queue consumer error : " + e);
+			
+			try {
+                Thread.sleep(Contants.ONE_SECOND);
+            } catch (InterruptedException inE) {
+                inE.printStackTrace();
+            }
+			
+			return buildQueueConsumer(connection, queue);
+			
+		}
     }
 
 }

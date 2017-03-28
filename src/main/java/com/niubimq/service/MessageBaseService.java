@@ -11,9 +11,9 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by junjin4838 on 17/3/16.
  */
-public abstract class MessageService {
+public abstract class MessageBaseService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
+    protected static final Logger logger = LoggerFactory.getLogger(MessageBaseService.class);
 
     /**
      * 创建队列（发送消息，消费消息都需要执行创建队列）
