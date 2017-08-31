@@ -32,8 +32,7 @@ public class ProcessMessage {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static DetailRes process(Message message)
-			throws UnsupportedEncodingException {
+	public static DetailRes process(Message message) throws UnsupportedEncodingException {
 
 		DetailRes detailRes = null;
 
@@ -47,6 +46,9 @@ public class ProcessMessage {
 			JSONObject messageObj = (JSONObject)FastJsonUtil.toJSON(messageStr);
 			
 			String url = (String) messageObj.get("url");
+			
+			//Step2
+			
 
 			detailRes = new DetailRes(true, "处理成功");
 			return detailRes;

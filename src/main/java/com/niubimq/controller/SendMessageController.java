@@ -53,6 +53,8 @@ public class SendMessageController {
 		json.put("trackId", "jbk001");
 		json.put("name", "jbk");
 		json.put("url", "www.baidu.com");
+		
+		logger.info("发送的数据：" + json);
 
 		DetailRes detailRes = sendMessage.send(exchange, routing, queue, type,json);
 
